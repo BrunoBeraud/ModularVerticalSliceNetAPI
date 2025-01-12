@@ -1,0 +1,64 @@
+{
+    "$schema": "https://json.schemastore.org/template",
+    "author": "BrunoBeraud",
+    "classifications": [
+        "Web",
+        "API"
+    ],
+    "identity": "Modular.VerticalSlice.API",
+    "name": "Your Modular VerticalSlice API",
+    "description": "Web api template based on modular monolith and vertical slicing principles and some others (REPR, DDD, Clean / Hexagonal architectures ...)",
+    "shortName": "modular.verticalSlice.api",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    },
+    "sources": [
+        {
+            "source": "./src"
+        }
+    ],
+    "symbols": {
+        "ComponentName": {
+            "type": "parameter",
+            "description": "The name of the component",
+            "defaultValue": "ComponentName",
+            "replaces": "ComponentName",
+            "fileRename": "ComponentName"
+        },
+        "FunctionalDomainNameA": {
+            "type": "parameter",
+            "description": "The first functional domain name",
+            "defaultValue": "DomainA",
+            "replaces": "FunctionalDomainNameA",
+            "fileRename": "FunctionalDomainNameA"
+        },
+        "FunctionalDomainNameB": {
+            "type": "parameter",
+            "description": "The second functional domain name",
+            "defaultValue": "DomainB",
+            "replaces": "FunctionalDomainNameB",
+            "fileRename": "FunctionalDomainNameB"
+        },
+        "FunctionalDomainNameALowerCase": {
+            "type": "generated",
+            "generator": "casing",
+            "parameters": {
+                "source": "FunctionalDomainNameA",
+                "toLower": true
+            },
+            "replaces": "FunctionalDomainNameALowerCase",
+            "fileRename": "FunctionalDomainNameALowerCase"
+        },
+        "FunctionalDomainNameBLowerCase": {
+            "type": "generated",
+            "generator": "casing",
+            "parameters": {
+                "source": "FunctionalDomainNameB",
+                "toLower": true
+            },
+            "replaces": "FunctionalDomainNameBLowerCase",
+            "fileRename": "FunctionalDomainNameBLowerCase"
+        }
+    }
+}

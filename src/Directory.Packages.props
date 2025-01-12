@@ -1,0 +1,26 @@
+<Project>
+ <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <!-- functional domains projects packages -->
+    <ItemGroup>
+      <PackageVersion Include="Asp.Versioning.Http" Version="8.1.0" />
+    </ItemGroup>
+
+  <!-- Tests projects packages -->
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.0" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.2" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageVersion Include="xunit" Version="2.9.3" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.0" />
+    <PackageVersion Include="AutoFixture" Version="4.18.1" />
+    <PackageVersion Include="Moq" Version="4.20.72" />
+    <PackageVersion Include="AutoFixture.AutoMoq" Version="4.18.1" />
+    <PackageVersion Include="AutoFixture.Xunit2" Version="4.18.1" />
+    <PackageVersion Include="FluentAssertions" Version="7.0.0" />
+    <PackageVersion Include="TngTech.ArchUnitNET" Version="0.11.1" />
+    <PackageVersion Include="TngTech.ArchUnitNET.xUnit" Version="0.11.1" />
+  </ItemGroup>
+</Project>

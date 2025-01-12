@@ -1,0 +1,13 @@
+@hostName=localhost
+@port=5184
+
+### Get ResourceB By Id
+GET http://{{hostName}}:{{port}}/api/v1/FunctionalDomainNameBLowerCase/01940e59-db41-7915-8b8e-3670db6ed5bd
+
+### Create Resource B
+POST http://{{hostName}}:{{port}}/api/v1/FunctionalDomainNameBLowerCase
+Content-Type: application/json
+
+{
+    "someProperty": "fake content"
+}
