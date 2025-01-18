@@ -3,7 +3,6 @@ using ArchUnitNET.Loader;
 
 using static ArchUnitNET.Fluent.ArchRuleDefinition;
 using ArchUnitNET.xUnit;
-using FluentAssertions;
 using FunctionalDomainNameA;
 using FunctionalDomainNameB;
 

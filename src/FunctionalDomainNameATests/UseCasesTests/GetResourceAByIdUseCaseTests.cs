@@ -1,7 +1,5 @@
 using AutoFixture.Xunit2;
 
-using FluentAssertions;
-
 using FunctionalDomainNameA.Core.ResourceA.Ports;
 using FunctionalDomainNameA.Features.GetResourceAById;
 
@@ -32,6 +30,6 @@ public class GetResourceAByIdUseCaseTests
         var result = sut.GetResourceAById(request);
 
         // Assert
-        result.Should().BeEquivalentTo(expected);
+        Assert.Equivalent(result, expected);
     }
 }

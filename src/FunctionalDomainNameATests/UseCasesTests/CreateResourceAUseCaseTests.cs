@@ -1,7 +1,5 @@
 using AutoFixture;
 
-using FluentAssertions;
-
 using FunctionalDomainNameA.Core.ResourceA.Ports;
 using FunctionalDomainNameA.Features.CreateResourceA;
 
@@ -28,6 +26,6 @@ public class CreateResourceAUseCaseTests
         var result = sut.CreateResourceA(request);
 
         // Assert
-        result.Should().BeEquivalentTo(expected);
+        Assert.Equivalent(result, expected);
     }
 }

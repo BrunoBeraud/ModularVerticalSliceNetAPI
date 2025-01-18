@@ -17,7 +17,7 @@
     <PackageReference Include="Moq" />
     <PackageReference Include="AutoFixture.AutoMoq" />
     <PackageReference Include="AutoFixture.Xunit2" />
-    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="DeepEqual" />
   </ItemGroup>
 
   <ItemGroup>

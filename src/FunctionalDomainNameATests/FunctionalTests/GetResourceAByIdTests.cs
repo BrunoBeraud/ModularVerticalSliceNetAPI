@@ -1,5 +1,3 @@
-using FluentAssertions;
-
 using FunctionalDomainNameA.Core.ResourceA.Ports;
 using FunctionalDomainNameA.Core.ResourceA;
 
@@ -22,12 +20,12 @@ public class GetResourceAByIdTests(FunctionalTestsApplicationFactory factory)
 
         // Act
         using var response = await Client.GetAsync($"api/v1/FunctionalDomainNameALowerCase/{seed.Id}");
-        response.IsSuccessStatusCode.Should().BeTrue();
+        Assert.True(response.IsSuccessStatusCode);
 
         // Assert
         var jsonResponse = await response.Content.ReadAsStringAsync();
         var result = DeSerializeData<ResourceAEntity>(jsonResponse);
 
-        result.Should().BeEquivalentTo(seed);
+        Assert.Equivalent(result, seed);
     }
 }

@@ -1,11 +1,11 @@
 using System.Net.Http.Json;
 
-using FluentAssertions;
-
 using FunctionalDomainNameA.Core.ResourceA.Ports;
 using FunctionalDomainNameA.Core.ResourceA;
 
 using TestsHelpers;
+
+using DeepEqual.Syntax;
 
 namespace FunctionalDomainNameATests.FunctionalTests;
 
@@ -30,16 +30,20 @@ public class CreateResourceATests
             var expected = new ResourceAEntity(_requestPayLoad.SomeProperty);
 
             // Assert
-            response.IsSuccessStatusCode.Should().BeTrue();
+            Assert.True(response.IsSuccessStatusCode);
 
             var jsonResponse = await response.Content.ReadAsStringAsync();
             var expectedResponse = DeSerializeData<ResourceAEntity>(jsonResponse);
 
-            expectedResponse.Should().BeEquivalentTo(expected, options => options.Excluding(x => x.Id));
-            expectedResponse.Id.Should().NotBeNull();
+            expectedResponse
+                .WithDeepEqual(expected)
+                .SkipDefault<ResourceAEntity>()
+                .IgnoreSourceProperty(x => x.Id);
+
+            Assert.NotNull(expectedResponse.Id);
 
             var expectedValueInserted = GetDataById<IResourceARepository, ResourceAEntity, ResourceAId>(expectedResponse.Id);
-            expectedValueInserted.Should().BeEquivalentTo(expected);
+            Assert.Equivalent(expectedValueInserted, expected);
         }
     }
 
