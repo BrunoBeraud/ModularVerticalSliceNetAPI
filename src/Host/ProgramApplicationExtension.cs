@@ -19,6 +19,13 @@ public static class ProgramApplicationExtension
             .MapFunctionalDomainNameAEndpoints()
             .MapFunctionalDomainNameBEndpoints();
 
+        app.UseMiddleware<LogFailedIncomingRequestMiddleware>();
+
+        app.UseExceptionHandler(new ExceptionHandlerOptions
+        {
+            StatusCodeSelector = ex => StatusCodes.Status500InternalServerError
+        });
+
         return app;
     }
 }

@@ -1,3 +1,5 @@
+using System.Net;
+
 using FunctionalDomainNameA.Core.ResourceA.Ports;
 
 using Microsoft.AspNetCore.Builder;
@@ -31,7 +33,13 @@ internal static class CreateResourceAEndpoint
             ,
             failure: (errorResult) => result.Error switch
             {
-                CreateResourceAError => TypedResults.BadRequest(),
+                CreateResourceAError => TypedResults.BadRequest(new ProblemDetails()
+                {
+                    Status = (int)HttpStatusCode.BadRequest,
+                    Title = "An error occurred",
+                    Type = nameof(CreateResourceAError),
+                    Detail = result.Error.ErrorMessage
+                }),
                 _ => TypedResults.UnprocessableEntity()
             });
     }

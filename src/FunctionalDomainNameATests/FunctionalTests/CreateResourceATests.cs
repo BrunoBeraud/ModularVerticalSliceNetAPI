@@ -14,13 +14,13 @@ public class CreateResourceATests
     public class GetResourceAByIdTests(FunctionalTestsApplicationFactory factory)
     : BaseFunctionalTestsCollectionFixture(factory)
     {
-        private const string _requestPayLoadJson = "{\"someProperty\":\"fakecontent\"}";
+        private const string RequestPayLoadJson = "{\"someProperty\":\"fakecontent\"}";
 
         [Fact]
         public async Task CreateResourceA_CreateResourceARequestValid_ReturnResourceA()
         {
             // Arrange
-            var _requestPayLoad = DeSerializeData<FunctionalDomainNameA.Features.CreateResourceA.CreateResourceARequest>(_requestPayLoadJson);
+            var _requestPayLoad = DeSerializeData<FunctionalDomainNameA.Features.CreateResourceA.CreateResourceARequest>(RequestPayLoadJson);
 
             // Act
             using var response = await Client.PostAsJsonAsync(

@@ -1,3 +1,5 @@
+using System.Net;
+
 using FunctionalDomainNameB.Core.ResourceB.Ports;
 
 using Microsoft.AspNetCore.Builder;
@@ -31,7 +33,13 @@ internal static class CreateResourceBEndpoint
             ,
             failure: (errorResult) => result.Error switch
             {
-                CreateResourceBError => TypedResults.BadRequest(),
+                CreateResourceBError => TypedResults.BadRequest(new ProblemDetails()
+                {
+                    Status = (int)HttpStatusCode.BadRequest,
+                    Title = "An error occurred",
+                    Type = nameof(CreateResourceBError),
+                    Detail = result.Error.ErrorMessage
+                }),
                 _ => TypedResults.UnprocessableEntity()
             });
     }
