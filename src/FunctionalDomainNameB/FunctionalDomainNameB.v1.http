@@ -9,5 +9,5 @@ POST http://{{hostName}}:{{port}}/api/v1/FunctionalDomainNameBLowerCase
 Content-Type: application/json
 
 {
-    "someProperty": "fake content"
+    "someProperty": null
 }

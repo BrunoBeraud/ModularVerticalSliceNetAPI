@@ -6,6 +6,9 @@
   <!-- functional domains projects packages -->
     <ItemGroup>
       <PackageVersion Include="Asp.Versioning.Http" Version="8.1.0" />
+      <PackageVersion Include="FluentValidation" Version="11.11.0" />
+      <PackageVersion Include="FluentValidation.DependencyInjectionExtensions"  Version="11.11.0" />
+      <PackageVersion Include="SharpGrip.FluentValidation.AutoValidation.Endpoints" Version="1.5.0" />
     </ItemGroup>
 
   <!-- Tests projects packages -->

@@ -13,6 +13,9 @@
 
     <ItemGroup>
     <PackageReference Include="Asp.Versioning.Http" />
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+    <PackageReference Include="SharpGrip.FluentValidation.AutoValidation.Endpoints" />
   </ItemGroup>
 
   <ItemGroup>

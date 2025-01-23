@@ -1,14 +1,19 @@
 ﻿using Asp.Versioning.Conventions;
 
+using FluentValidation;
+
 using FunctionalDomainNameA.Core.ResourceA.Ports;
 using FunctionalDomainNameA.Features.CreateResourceA;
 using FunctionalDomainNameA.Features.GetResourceAById;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+using SharpGrip.FluentValidation.AutoValidation.Endpoints.Extensions;
 
 namespace FunctionalDomainNameA;
 
@@ -26,6 +31,9 @@ public static class FunctionalDomainNameARegistration
             builder.Services.AddSingleton<IResourceARepository, ResourceARepositoryInMemory>();
         }
 
+        builder.Services.AddValidatorsFromAssemblyContaining(typeof(FunctionalDomainNameARegistration), includeInternalTypes: true);
+        builder.Services.AddFluentValidationAutoValidation();
+
         return builder;
     }
 
@@ -40,6 +48,7 @@ public static class FunctionalDomainNameARegistration
         group.MapGroup("v{v:apiVersion}/FunctionalDomainNameALowerCase")
             .WithTags("FunctionalDomainNameALowerCase")
             .WithApiVersionSet(apiVersionSet)
+            .AddFluentValidationAutoValidation()
             .MapCreateResourceAEndpoint()
             .MapGetResourceAByIdEndpoint();
 
