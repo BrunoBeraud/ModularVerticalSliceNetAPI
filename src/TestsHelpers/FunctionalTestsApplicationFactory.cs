@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 
-namespace TestsHelpers;
+namespace ComponentName.TestsHelpers;
 
 public class FunctionalTestsApplicationFactory : WebApplicationFactory<Program>
 {
@@ -10,15 +10,14 @@ public class FunctionalTestsApplicationFactory : WebApplicationFactory<Program>
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        // Override application configuration 
+        // Override application configuration
         var config = new ConfigurationBuilder()
-            .AddInMemoryCollection([new("ConfigurationKeyToOverrideSample", "ConfigurationValueToOverrideSample")])
+            .AddInMemoryCollection(
+                [new("ConfigurationKeyToOverrideSample", "ConfigurationValueToOverrideSample")]
+            )
             .Build();
 
-        builder.ConfigureAppConfiguration((context, configBuilder) =>
-        {
-            configBuilder.AddConfiguration(config);
-        });
+        builder.UseConfiguration(config);
 
         builder.ConfigureServices(services =>
         {

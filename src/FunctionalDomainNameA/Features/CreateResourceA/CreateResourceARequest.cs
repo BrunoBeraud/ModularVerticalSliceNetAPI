@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace FunctionalDomainNameA.Features.CreateResourceA;
+namespace ComponentName.FunctionalDomainNameA.Features.CreateResourceA;
 
 internal record CreateResourceARequest(string SomeProperty);
 

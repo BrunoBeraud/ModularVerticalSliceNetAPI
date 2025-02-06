@@ -1,50 +1,70 @@
-using System.Net.Http.Json;
+using System.Net.Mime;
+using System.Text;
 
-using FunctionalDomainNameB.Core.ResourceB.Ports;
-using FunctionalDomainNameB.Core.ResourceB;
+using ComponentName.FunctionalDomainNameB.Core.ResourceB;
+using ComponentName.FunctionalDomainNameB.Core.ResourceB.Ports;
+using ComponentName.FunctionalDomainNameB.Features.CreateResourceB;
+using ComponentName.TestsHelpers;
 
-using TestsHelpers;
+namespace ComponentName.FunctionalDomainNameBTests.FunctionalTests;
 
-using DeepEqual.Syntax;
-
-namespace FunctionalDomainNameBTests.FunctionalTests;
-
-public class CreateResourceBTests
-{
-    public class GetResourceBByIdTests(FunctionalTestsApplicationFactory factory)
+public class CreateResourceBTests(FunctionalTestsApplicationFactory factory)
     : BaseFunctionalTestsCollectionFixture(factory)
+{
+    private const string RequestPayLoadJson = """{"someProperty":"fakecontent"}""";
+    private const string ResponsePayLoadJson = """{"someProperty":"fakecontent"}""";
+
+    [Fact]
+    public async Task CreateResourceB_CreateResourceBRequestValid_ReturnResourceBCreatedResponse()
     {
-        private const string RequestPayLoadJson = "{\"someProperty\":\"fakecontent\"}";
+        // Arrange
+        var expectedResponse = DeSerializeData<CreatedResourceBResponse>(ResponsePayLoadJson);
 
-        [Fact]
-        public async Task CreateResourceB_CreateResourceBRequestValid_ReturnResourceB()
-        {
-            // Arrange
-            var requestPayLoad = DeSerializeData<FunctionalDomainNameB.Features.CreateResourceB.CreateResourceBRequest>(RequestPayLoadJson);
+        // Act
+        var httpResponse = await SendValidRequest();
 
-            // Act
-            using var response = await Client.PostAsJsonAsync(
-                requestUri: $"api/v1/FunctionalDomainNameBLowerCase",
-                value: requestPayLoad);
+        // Assert
+        Assert.True(httpResponse.IsSuccessStatusCode);
 
-            var expected = new ResourceBEntity(requestPayLoad.SomeProperty);
+        var jsonResponse = await httpResponse.Content.ReadAsStringAsync(
+            TestContext.Current.CancellationToken
+        );
+        var response = DeSerializeData<CreatedResourceBResponse>(jsonResponse);
 
-            // Assert
-            Assert.True(response.IsSuccessStatusCode);
-
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            var expectedResponse = DeSerializeData<ResourceBEntity>(jsonResponse);
-
-            expectedResponse
-                .WithDeepEqual(expected)
-                .SkipDefault<ResourceBEntity>()
-                .IgnoreSourceProperty(x => x.Id)
-                .Assert();
-            Assert.NotNull(expectedResponse.Id);
-
-            var expectedValueInserted = GetDataById<IResourceBRepository, ResourceBEntity, ResourceBId>(expectedResponse.Id);
-            Assert.Equivalent(expectedValueInserted, expected);
-        }
+        Assert.Equivalent(expectedResponse, response);
     }
 
+    [Fact]
+    public async Task CreateResourceB_CreateResourceBRequestValid_SaveInRepository()
+    {
+        // Act
+        var httpResponse = await SendValidRequest();
+
+        // Assert
+
+        var jsonResponse = await httpResponse.Content.ReadAsStringAsync(
+            TestContext.Current.CancellationToken
+        );
+        var response = DeSerializeData<CreateResourceBResponse>(jsonResponse);
+
+        var expectedValueInserted = GetDataById<IResourceBRepository, ResourceBEntity, ResourceBId>(
+            response.Id
+        );
+        Assert.NotNull(expectedValueInserted);
+    }
+
+    private async Task<HttpResponseMessage> SendValidRequest()
+    {
+        using StringContent jsonContent = new(
+            content: RequestPayLoadJson,
+            encoding: Encoding.UTF8,
+            mediaType: MediaTypeNames.Application.Json
+        );
+
+        return await Client.PostAsync(
+            requestUri: $"api/v1/FunctionalDomainNameBLowerCase",
+            content: jsonContent,
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+    }
 }

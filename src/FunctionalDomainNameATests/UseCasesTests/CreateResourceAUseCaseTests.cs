@@ -1,26 +1,26 @@
 using AutoFixture;
+using ComponentName.FunctionalDomainNameA.Core.ResourceA.Ports;
+using ComponentName.FunctionalDomainNameA.Features.CreateResourceA;
+using ComponentName.SharedKernel;
+using ComponentName.TestsHelpers;
 
-using FunctionalDomainNameA.Core.ResourceA.Ports;
-using FunctionalDomainNameA.Features.CreateResourceA;
-
-using SharedKernel;
-
-using TestsHelpers;
-
-namespace FunctionalDomainNameATests.UseCasesTests;
+namespace ComponentName.FunctionalDomainNameATests.UseCasesTests;
 
 public class CreateResourceAUseCaseTests
 {
     [Theory, AutoDomainData]
     internal void CreateResourceA_WrongSomeProperty_ReturnsCreateResourceAError(
         CreateResourceAUseCase sut,
-        Fixture fixture)
+        Fixture fixture
+    )
     {
         var request = fixture
             .Build<FunctionalDomainNameA.Core.ResourceA.Ports.CreateResourceARequest>()
             .With(x => x.SomeProperty, "raiseError")
             .Create();
-        Result<CreateResourceAResponse, CreateResourceAError> expected = new CreateResourceAError(ErrorMessage: "SomeErrorRaised");
+        Result<CreatedResourceAResponse, CreateResourceAError> expected = new CreateResourceAError(
+            ErrorMessage: "SomeErrorRaised"
+        );
 
         // Act
         var result = sut.CreateResourceA(request);

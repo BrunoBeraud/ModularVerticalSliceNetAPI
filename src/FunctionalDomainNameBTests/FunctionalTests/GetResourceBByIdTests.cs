@@ -1,31 +1,43 @@
-using FunctionalDomainNameB.Core.ResourceB.Ports;
-using FunctionalDomainNameB.Core.ResourceB;
+using ComponentName.FunctionalDomainNameB.Core.ResourceB;
+using ComponentName.FunctionalDomainNameB.Core.ResourceB.Ports;
+using ComponentName.TestsHelpers;
 
-using TestsHelpers;
-
-namespace FunctionalDomainNameBTests.FunctionalTests;
+namespace ComponentName.FunctionalDomainNameATests.FunctionalTests;
 
 public class GetResourceBByIdTests(FunctionalTestsApplicationFactory factory)
     : BaseFunctionalTestsCollectionFixture(factory)
 {
+    private const string SeedId = "70ed13b5-ff0f-4cfd-9e45-cce72be23a8c";
+    private const string ResponseExpectedJson = $$"""
+        {
+            "someProperty":"fakecontent", "id": "{{SeedId}}"
+        }
+        """;
+
+    private ResourceBEntity ResponseExpected =>
+        DeSerializeData<ResourceBEntity>(ResponseExpectedJson);
+
     [Fact]
     public async Task GetResourceBById_ResourceBExists_ReturnResourceB()
     {
         // Arrange
-        var seed = new ResourceBEntity(
-            id: Guid.Parse("6e37bd9c-536f-4797-916b-3fb751d55c10"),
-            someProperty: "test data");
+        var seed = new ResourceBEntity(new ResourceBId(Guid.Parse(SeedId)), "fakecontent");
 
         SeedData<IResourceBRepository, ResourceBEntity, ResourceBId>(seed);
 
         // Act
-        using var response = await Client.GetAsync($"api/v1/FunctionalDomainNameBLowerCase/{seed.Id}");
+        using var response = await Client.GetAsync(
+            $"api/v1/FunctionalDomainNameBLowerCase/{SeedId}",
+            TestContext.Current.CancellationToken
+        );
         Assert.True(response.IsSuccessStatusCode);
 
         // Assert
-        var jsonResponse = await response.Content.ReadAsStringAsync();
+        var jsonResponse = await response.Content.ReadAsStringAsync(
+            TestContext.Current.CancellationToken
+        );
         var result = DeSerializeData<ResourceBEntity>(jsonResponse);
 
-        Assert.Equivalent(result, seed);
+        Assert.Equivalent(ResponseExpected, result);
     }
 }

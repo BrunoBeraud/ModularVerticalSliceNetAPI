@@ -1,14 +1,17 @@
-using FunctionalDomainNameB.Core.ResourceB.Ports;
-using FunctionalDomainNameB.Core.ResourceB;
+using ComponentName.FunctionalDomainNameB.Core.ResourceB;
+using ComponentName.FunctionalDomainNameB.Core.ResourceB.Ports;
 
-namespace FunctionalDomainNameB;
+namespace ComponentName.FunctionalDomainNameB;
 
 internal class ResourceBRepositoryInMemory : IResourceBRepository
 {
-    private readonly List<ResourceBEntity> _inMemoryCollection = [
+    private readonly List<ResourceBEntity> _inMemoryCollection =
+    [
         new ResourceBEntity(
             id: Guid.Parse("01940e59-db41-7915-8b8e-3670db6ed5bd"),
-            someProperty: "fake seed")];
+            someProperty: "fake seed"
+        ),
+    ];
 
     public void Create(ResourceBEntity entityAToAdd)
     {

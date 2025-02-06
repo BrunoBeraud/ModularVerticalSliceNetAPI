@@ -1,50 +1,69 @@
-using System.Net.Http.Json;
+using System.Net.Mime;
+using System.Text;
+using ComponentName.FunctionalDomainNameA.Core.ResourceA;
+using ComponentName.FunctionalDomainNameA.Core.ResourceA.Ports;
+using ComponentName.FunctionalDomainNameA.Features.CreateResourceA;
+using ComponentName.TestsHelpers;
 
-using FunctionalDomainNameA.Core.ResourceA.Ports;
-using FunctionalDomainNameA.Core.ResourceA;
+namespace ComponentName.FunctionalDomainNameATests.FunctionalTests;
 
-using TestsHelpers;
-
-using DeepEqual.Syntax;
-
-namespace FunctionalDomainNameATests.FunctionalTests;
-
-public class CreateResourceATests
-{
-    public class GetResourceAByIdTests(FunctionalTestsApplicationFactory factory)
+public class CreateResourceATests(FunctionalTestsApplicationFactory factory)
     : BaseFunctionalTestsCollectionFixture(factory)
+{
+    private const string RequestPayLoadJson = """{"someProperty":"fakecontent"}""";
+    private const string ResponsePayLoadJson = """{"someProperty":"fakecontent"}""";
+
+    [Fact]
+    public async Task CreateResourceA_CreateResourceARequestValid_ReturnResourceACreatedResponse()
     {
-        private const string RequestPayLoadJson = "{\"someProperty\":\"fakecontent\"}";
+        // Arrange
+        var expectedResponse = DeSerializeData<CreatedResourceAResponse>(ResponsePayLoadJson);
 
-        [Fact]
-        public async Task CreateResourceA_CreateResourceARequestValid_ReturnResourceA()
-        {
-            // Arrange
-            var _requestPayLoad = DeSerializeData<FunctionalDomainNameA.Features.CreateResourceA.CreateResourceARequest>(RequestPayLoadJson);
+        // Act
+        var httpResponse = await SendValidRequest();
 
-            // Act
-            using var response = await Client.PostAsJsonAsync(
-                requestUri: $"api/v1/FunctionalDomainNameALowerCase",
-                value: _requestPayLoad);
+        // Assert
+        Assert.True(httpResponse.IsSuccessStatusCode);
 
-            var expected = new ResourceAEntity(_requestPayLoad.SomeProperty);
+        var jsonResponse = await httpResponse.Content.ReadAsStringAsync(
+            TestContext.Current.CancellationToken
+        );
+        var response = DeSerializeData<CreatedResourceAResponse>(jsonResponse);
 
-            // Assert
-            Assert.True(response.IsSuccessStatusCode);
-
-            var jsonResponse = await response.Content.ReadAsStringAsync();
-            var expectedResponse = DeSerializeData<ResourceAEntity>(jsonResponse);
-
-            expectedResponse
-                .WithDeepEqual(expected)
-                .SkipDefault<ResourceAEntity>()
-                .IgnoreSourceProperty(x => x.Id);
-
-            Assert.NotNull(expectedResponse.Id);
-
-            var expectedValueInserted = GetDataById<IResourceARepository, ResourceAEntity, ResourceAId>(expectedResponse.Id);
-            Assert.Equivalent(expectedValueInserted, expected);
-        }
+        Assert.Equivalent(expectedResponse, response);
     }
 
+    [Fact]
+    public async Task CreateResourceA_CreateResourceARequestValid_SaveInRepository()
+    {
+        // Act
+        var httpResponse = await SendValidRequest();
+
+        // Assert
+
+        var jsonResponse = await httpResponse.Content.ReadAsStringAsync(
+            TestContext.Current.CancellationToken
+        );
+        var response = DeSerializeData<CreateResourceAResponse>(jsonResponse);
+
+        var expectedValueInserted = GetDataById<IResourceARepository, ResourceAEntity, ResourceAId>(
+            response.Id
+        );
+        Assert.NotNull(expectedValueInserted);
+    }
+
+    private async Task<HttpResponseMessage> SendValidRequest()
+    {
+        using StringContent jsonContent = new(
+            content: RequestPayLoadJson,
+            encoding: Encoding.UTF8,
+            mediaType: MediaTypeNames.Application.Json
+        );
+
+        return await Client.PostAsync(
+            requestUri: $"api/v1/FunctionalDomainNameALowerCase",
+            content: jsonContent,
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+    }
 }

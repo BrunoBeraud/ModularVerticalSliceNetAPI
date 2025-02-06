@@ -1,14 +1,16 @@
-using FunctionalDomainNameB.Core.ResourceB.Ports;
+using ComponentName.FunctionalDomainNameB.Core.ResourceB.Ports;
+using ComponentName.SharedKernel;
 
-using SharedKernel;
+namespace ComponentName.FunctionalDomainNameB.Features.GetResourceBById;
 
-namespace FunctionalDomainNameB.Features.GetResourceBById;
-
-internal class GetResourceBByIdUseCase(IResourceBRepository ResourceBRepository) : IGetResourceBByIdUseCase
+internal class GetResourceBByIdUseCase(IResourceBRepository resourceBRepository)
+    : IGetResourceBByIdUseCase
 {
-    public Result<GetResourceBByIdResponse, GetResourceBByIdNotFoundError> GetResourceBById(GetResourceBByIdRequest request)
+    public Result<GetResourceBByIdResponse, GetResourceBByIdNotFoundError> GetResourceBById(
+        GetResourceBByIdRequest request
+    )
     {
-        var ResourceB = ResourceBRepository.GetById(request.ResourceRequestedId);
+        var ResourceB = resourceBRepository.GetById(request.ResourceRequestedId);
 
         return ResourceB is null
             ? new GetResourceBByIdNotFoundError(IdRequestedNotFound: request.ResourceRequestedId)

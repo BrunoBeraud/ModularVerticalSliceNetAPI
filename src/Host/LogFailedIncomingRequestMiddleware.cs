@@ -1,10 +1,11 @@
 using System.Text;
 
-namespace Host;
+namespace ComponentName.Host;
 
 internal class LogFailedIncomingRequestMiddleware(
     RequestDelegate next,
-    ILogger<LogFailedIncomingRequestMiddleware> logger)
+    ILogger<LogFailedIncomingRequestMiddleware> logger
+)
 {
     private readonly RequestDelegate _next = next;
     private readonly ILogger<LogFailedIncomingRequestMiddleware> _logger = logger;
@@ -40,10 +41,16 @@ internal class LogFailedIncomingRequestMiddleware(
         {
             // Log the details of the request and response
             var logLevel = context.Response.StatusCode >= 500 ? LogLevel.Error : LogLevel.Warning;
-            var headers = string.Join(", ", request.Headers
-                .Where(h => !_sensitiveHeadersKeys.Contains(h.Key))
-                .Select(h => $"{h.Key}: {h.Value}"));
-            var queryParameters = string.Join(", ", request.Query.Select(q => $"{q.Key}: {q.Value}"));
+            var headers = string.Join(
+                ", ",
+                request
+                    .Headers.Where(h => !_sensitiveHeadersKeys.Contains(h.Key))
+                    .Select(h => $"{h.Key}: {h.Value}")
+            );
+            var queryParameters = string.Join(
+                ", ",
+                request.Query.Select(q => $"{q.Key}: {q.Value}")
+            );
 
             _logger.IncomingRequestFailed(
                 logLevel: logLevel,
@@ -53,7 +60,8 @@ internal class LogFailedIncomingRequestMiddleware(
                 headers: headers,
                 queryParameters: queryParameters,
                 jsonRequestPayload: jsonRequestPayload,
-                responseJsonBody: jsonResponseBody);
+                responseJsonBody: jsonResponseBody
+            );
         }
 
         // Copy the response body back to the original stream
@@ -71,4 +79,3 @@ internal class LogFailedIncomingRequestMiddleware(
         return jsonRequestPayload;
     }
 }
-

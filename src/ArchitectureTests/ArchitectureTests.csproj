@@ -1,18 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <IsPackable>false</IsPackable>
+    <PropertyGroup>
+    <RootNamespace>ComponentName.ArchitectureTests</RootNamespace>
+    <AssemblyName>ComponentName.ArchitectureTests</AssemblyName>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <OutputType>Exe</OutputType>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest"/>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="TngTech.ArchUnitNET" />
-    <PackageReference Include="TngTech.ArchUnitNET.xUnit" />
-    <PackageReference Include="xunit" />
+    <PackageReference Include="TngTech.ArchUnitNET.xUnitV3" />
+    <PackageReference Include="xunit.v3" />
     <PackageReference Include="xunit.runner.visualstudio" />
   </ItemGroup>
 
@@ -21,6 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../Infrastructure/Infrastructure.csproj" />
+    <ProjectReference Include="../SharedKernel/SharedKernel.csproj" />
     <ProjectReference Include="../FunctionalDomainNameA/FunctionalDomainNameA.csproj" />
     <ProjectReference Include="../FunctionalDomainNameB/FunctionalDomainNameB.csproj" />
     <ProjectReference Include="../TestsHelpers/TestsHelpers.csproj" />

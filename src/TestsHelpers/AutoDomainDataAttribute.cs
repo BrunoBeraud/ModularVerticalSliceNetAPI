@@ -1,14 +1,11 @@
 using AutoFixture;
 using AutoFixture.AutoMoq;
-using AutoFixture.Xunit2;
+using AutoFixture.Xunit3;
 
-namespace TestsHelpers;
+namespace ComponentName.TestsHelpers;
 
 public class AutoDomainDataAttribute : AutoDataAttribute
 {
     public AutoDomainDataAttribute()
-      : base(() => new Fixture().Customize(new AutoMoqCustomization()))
-    {
-    }
+        : base(() => new Fixture().Customize(new AutoMoqCustomization())) { }
 }
-

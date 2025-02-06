@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <RootNamespace>ComponentName.TestHelpers</RootNamespace>
+    <AssemblyName>ComponentName.TestHelpers</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,8 +13,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
     <PackageReference Include="Moq" />
     <PackageReference Include="AutoFixture.AutoMoq" />
-    <PackageReference Include="AutoFixture.Xunit2" />
-    <PackageReference Include="xunit" />
+    <PackageReference Include="AutoFixture.Xunit3" />
+    <PackageReference Include="xunit.v3.extensibility.core" />
   </ItemGroup>
 
   <ItemGroup>

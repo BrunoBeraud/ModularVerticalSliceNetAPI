@@ -1,7 +1,5 @@
-using FunctionalDomainNameA.Core.ResourceA;
+using ComponentName.SharedKernel;
 
-using SharedKernel;
-
-namespace FunctionalDomainNameA.Core.ResourceA.Ports;
+namespace ComponentName.FunctionalDomainNameA.Core.ResourceA.Ports;
 
 internal interface IResourceARepository : IRepository<ResourceAEntity, ResourceAId> { }

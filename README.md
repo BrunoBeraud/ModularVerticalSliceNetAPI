@@ -32,7 +32,7 @@ This .NET architecture template is specifically designed to address critical sof
 - **Clear Testing Guidance:**  
   The template simplifies decisions on what and how to test by providing clear guidelines for:  
   - **Functional Tests:** Cover happy paths for all application entry points (e.g., HTTP, AMQP).  
-  - **Unit Tests:** Focus on unhappy paths (e.g., validating failure scenarios in services and use cases).  
+  - **Unit Tests:** Focus on unhappy paths (e.g., validating failure scenarios in services and use cases) and domain model business rules validation.
 Use tools like `TestContainer` and `.NET WebApplicationFactory` to verify end-to-end behavior.  
 
 ### 5. Facilitate Compliance with Architecture Rules
@@ -47,6 +47,44 @@ Use tools like `TestContainer` and `.NET WebApplicationFactory` to verify end-to
 ---
 
 This architecture template simplifies development, enhances maintainability, and ensures long-term scalability while keeping a focus on business needs and compliance. It’s a robust starting point for building clean, maintainable, and testable .NET applications.
+
+# Going Further with the Template Implementation
+
+This template is intentionally designed to be simple and non-opinionated, allowing you to choose your preferred technologies and libraries (e.g., Entity Framework, Mass Transit, databases, message brokers, etc.). The basic use cases demonstrated here leverage an `InMemoryRepository` for this reason. However, as your application grows in complexity, you'll need to adopt more sophisticated patterns and strategies. This section outlines key recommendations for taking your implementation further.
+
+## 1. Grouping Ports by Feature
+
+As the number of use cases and ports in your application increases, it can become difficult to maintain a clear structure. To manage this complexity:
+
+- **Group ports by feature**: When your application starts having many ports/interfaces, organizing them by feature will keep your codebase maintainable and coherent. All ports used by a feature will be regroup into this folder.
+
+## 2. Using Integration Events for Asynchronous Communication
+
+As your application grows and different modules (*bounded context*) need to communicate, synchronous communication can lead to tight coupling. Consider switching to **asynchronous communication** using integration events.
+
+- **Define integration events**: Use integration events to enable asynchronous communication between modules, ensuring that they remain decoupled. For example, after a change occurs in one module, you can publish an integration event to notify other modules.
+
+### Publishing Integration Events on Save Changes
+
+To ensure that integration events are consistently published whenever there are changes to your domain, you can take advantage of **EF Interceptors** combined with **Mass Transit** for event publishing.
+
+- **EF Interceptors**: These can be used to hook into the `SaveChanges` process of Entity Framework, ensuring that integration events are published when changes to your root aggregate are saved. This provides an automated way of broadcasting changes to other modules in your system.
+- **Mass Transit**: Use Mass Transit to handle the messaging aspect of these integration events. With Mass Transit, you can publish events to a message broker (e.g., RabbitMQ, Kafka) for delivery to other services in the system.
+
+### Using a Root Aggregate for Event Creation
+
+When you are working with complex domain models, it is beneficial to have a **root aggregate** that manages the creation of domain events, including integration events.
+
+- **Root aggregate**: The root aggregate is responsible for ensuring that domain logic is enforced and that events are published in a consistent and reliable manner. By centralizing event creation within the root aggregate, you can ensure that your system behaves as expected and that events are only triggered when necessary.
+
+### 3 Exposing Public Use Case Interfaces for Synchronous Communication
+
+While asynchronous communication is essential for decoupling, certain use cases may still require **synchronous communication** for efficiency or simplicity.
+
+- **Public use case interfaces**: Expose public ports for those use cases that need synchronous communication. For example, querying for specific data. These interfaces should be designed as
+if you were exposing this feature through HTTP REST Api endpoint.
+
+By following these guidelines, you can evolve your application from simple to complex while maintaining flexibility and scalability.
 
 ## How use it
 
@@ -71,14 +109,14 @@ To install this template locally, follow these steps:
    
    Clone via Git:
    ```bash
-   git clone https://github.com/your-username/your-template-repo.git
+   git clone https://github.com/BrunoBeraud/ModularVerticalSliceNetAPI.git
    ```
 
 2. **Install the template** using the .NET CLI:
    
    Navigate to the root folder of the cloned repository and run the following command:
    ```bash
-   dotnet new --install ./path/to/your-template-repo
+   dotnet new install .
    ```
 
 ### Usage

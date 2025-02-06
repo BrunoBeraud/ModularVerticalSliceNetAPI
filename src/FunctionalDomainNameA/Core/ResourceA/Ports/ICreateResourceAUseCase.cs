@@ -1,12 +1,16 @@
-using SharedKernel;
+using ComponentName.SharedKernel;
 
-namespace FunctionalDomainNameA.Core.ResourceA.Ports;
+namespace ComponentName.FunctionalDomainNameA.Core.ResourceA.Ports;
 
 internal interface ICreateResourceAUseCase
 {
-    Result<CreateResourceAResponse, CreateResourceAError> CreateResourceA(CreateResourceARequest request);
+    Result<CreatedResourceAResponse, CreateResourceAError> CreateResourceA(
+        CreateResourceARequest request
+    );
 }
 
 internal sealed record CreateResourceARequest(string SomeProperty);
-internal sealed record CreateResourceAResponse(ResourceAEntity ResourceACreated);
+
+internal sealed record CreatedResourceAResponse(ResourceAEntity ResourceACreated);
+
 internal sealed record CreateResourceAError(string ErrorMessage);

@@ -1,12 +1,17 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using SharedKernel;
+using ComponentName.SharedKernel;
 
-namespace Infrastructure;
+namespace ComponentName.Infrastructure;
 
-public class EntityIdConverter<T> : JsonConverter<T> where T : EntityId
+public class EntityIdConverter<T> : JsonConverter<T>
+    where T : EntityId
 {
-    public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override T Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
     {
         var stringValue = reader.GetString();
         ArgumentException.ThrowIfNullOrEmpty(stringValue);

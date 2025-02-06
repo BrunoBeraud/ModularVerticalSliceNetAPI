@@ -1,12 +1,16 @@
-using SharedKernel;
+using ComponentName.SharedKernel;
 
-namespace FunctionalDomainNameB.Core.ResourceB.Ports;
+namespace ComponentName.FunctionalDomainNameB.Core.ResourceB.Ports;
 
 internal interface ICreateResourceBUseCase
 {
-    Result<CreateResourceBResponse, CreateResourceBError> CreateResourceB(CreateResourceBRequest request);
+    Result<CreatedResourceBResponse, CreateResourceBError> CreateResourceB(
+        CreateResourceBRequest request
+    );
 }
 
 internal sealed record CreateResourceBRequest(string SomeProperty);
-internal sealed record CreateResourceBResponse(ResourceBEntity ResourceBCreated);
+
+internal sealed record CreatedResourceBResponse(ResourceBEntity ResourceBCreated);
+
 internal sealed record CreateResourceBError(string ErrorMessage);

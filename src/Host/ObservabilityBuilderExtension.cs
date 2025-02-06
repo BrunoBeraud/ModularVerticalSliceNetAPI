@@ -3,7 +3,7 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
-namespace Host;
+namespace ComponentName.Host;
 
 internal static class ObservabilityBuilderExtension
 {
@@ -25,7 +25,8 @@ internal static class ObservabilityBuilderExtension
         // Add Metrics for ASP.NET Core and export via OTLP
         otel.WithMetrics(metrics =>
             // Metrics provider from OpenTelemetry
-            metrics.AddAspNetCoreInstrumentation());
+            metrics.AddAspNetCoreInstrumentation()
+        );
 
         // Add Tracing for ASP.NET Core and export via OTLP
         otel.WithTracing(tracing => tracing.AddAspNetCoreInstrumentation());
@@ -39,4 +40,3 @@ internal static class ObservabilityBuilderExtension
         return builder;
     }
 }
-

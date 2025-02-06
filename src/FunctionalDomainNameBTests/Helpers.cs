@@ -1,7 +1,8 @@
-﻿using TestsHelpers;
+﻿using ComponentName.TestsHelpers;
 
-namespace FunctionalDomainNameBTests;
+namespace ComponentName.FunctionalDomainNameBTests;
 
-// XUnit limitation: collection definitions must be in the same assembly as the test that uses them. 
+// XUnit limitation: collection definitions must be in the same assembly as the test that uses them.
 [CollectionDefinition(nameof(BaseFunctionalTestsCollectionFixture))]
-public class WebApplicationFactoryCollection : ICollectionFixture<FunctionalTestsApplicationFactory> { }
+public class WebApplicationFactoryCollection
+    : ICollectionFixture<FunctionalTestsApplicationFactory> { }

@@ -1,13 +1,15 @@
-using FunctionalDomainNameB.Core.ResourceB.Ports;
-using FunctionalDomainNameB.Core.ResourceB;
+using ComponentName.FunctionalDomainNameB.Core.ResourceB;
+using ComponentName.FunctionalDomainNameB.Core.ResourceB.Ports;
+using ComponentName.SharedKernel;
 
-using SharedKernel;
+namespace ComponentName.FunctionalDomainNameB.Features.CreateResourceB;
 
-namespace FunctionalDomainNameB.Features.CreateResourceB;
-
-internal class CreateResourceBUseCase(IResourceBRepository _ResourceBRepository) : ICreateResourceBUseCase
+internal class CreateResourceBUseCase(IResourceBRepository resourceBRepository)
+    : ICreateResourceBUseCase
 {
-    public Result<CreateResourceBResponse, CreateResourceBError> CreateResourceB(Core.ResourceB.Ports.CreateResourceBRequest request)
+    public Result<CreatedResourceBResponse, CreateResourceBError> CreateResourceB(
+        Core.ResourceB.Ports.CreateResourceBRequest request
+    )
     {
         if (request.SomeProperty == "raiseError")
         {
@@ -16,8 +18,8 @@ internal class CreateResourceBUseCase(IResourceBRepository _ResourceBRepository)
 
         var entityToAdd = new ResourceBEntity(request.SomeProperty);
 
-        _ResourceBRepository.Create(entityToAdd);
+        resourceBRepository.Create(entityToAdd);
 
-        return new CreateResourceBResponse(ResourceBCreated: entityToAdd);
+        return new CreatedResourceBResponse(ResourceBCreated: entityToAdd);
     }
 }

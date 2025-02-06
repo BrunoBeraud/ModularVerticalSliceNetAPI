@@ -1,13 +1,15 @@
 @hostName=localhost
 @port=5184
 
-### Get ResourceA By Id
-GET http://{{hostName}}:{{port}}/api/v1/FunctionalDomainNameALowerCase/01940e59-db41-7915-8b8e-3670db6ed5bd
-
 ### Create Resource A
+# @name createResourceARequest
+
 POST http://{{hostName}}:{{port}}/api/v1/FunctionalDomainNameALowerCase
 Content-Type: application/json
 
 {
     "someProperty": "fake content"
 }
+
+### Get ResourceA By Id
+GET http://{{hostName}}:{{port}}/api/v1/FunctionalDomainNameALowerCase/{{createResourceARequest.response.body.$.id}}

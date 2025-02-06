@@ -1,9 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <RootNamespace>ComponentName.FunctionalDomainNameB</RootNamespace>
+    <AssemblyName>ComponentName.FunctionalDomainNameB</AssemblyName>
   </PropertyGroup>
 
 
@@ -24,7 +23,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <InternalsVisibleTo Include="FunctionalDomainNameBTests" />
+    <InternalsVisibleTo Include="$(AssemblyName)Tests" />
     <InternalsVisibleTo Include="ArchitectureTests" />
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
 </ItemGroup>

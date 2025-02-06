@@ -1,12 +1,13 @@
-using FunctionalDomainNameA;
+using ComponentName.FunctionalDomainNameA;
+using ComponentName.FunctionalDomainNameB;
 
-using FunctionalDomainNameB;
-
-namespace Host;
+namespace ComponentName.Host;
 
 internal static class ProgramBuilderExtension
 {
-    public static WebApplicationBuilder ConfigureApplicationBuilder(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder ConfigureApplicationBuilder(
+        this WebApplicationBuilder builder
+    )
     {
         builder.Services.AddOpenApi();
         builder.ConfigureObservability();
@@ -17,9 +18,7 @@ internal static class ProgramBuilderExtension
         builder.Services.AddProblemDetails();
 
         // Register FunctionalDomains modules services
-        builder
-            .AddFunctionalDomainNameA()
-            .AddFunctionalDomainNameB();
+        builder.AddFunctionalDomainNameA().AddFunctionalDomainNameB();
 
         return builder;
     }

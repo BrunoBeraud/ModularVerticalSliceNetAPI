@@ -1,15 +1,11 @@
-using AutoFixture.Xunit2;
-
-using FunctionalDomainNameA.Core.ResourceA.Ports;
-using FunctionalDomainNameA.Features.GetResourceAById;
-
+using AutoFixture.Xunit3;
+using ComponentName.FunctionalDomainNameA.Core.ResourceA.Ports;
+using ComponentName.FunctionalDomainNameA.Features.GetResourceAById;
+using ComponentName.SharedKernel;
+using ComponentName.TestsHelpers;
 using Moq;
 
-using SharedKernel;
-
-using TestsHelpers;
-
-namespace FunctionalDomainNameATests.UseCasesTests;
+namespace ComponentName.FunctionalDomainNameATests.UseCasesTests;
 
 public class GetResourceAByIdUseCaseTests
 {
@@ -17,14 +13,16 @@ public class GetResourceAByIdUseCaseTests
     internal void GetResourceAById_ResourceANotExists_ReturnsGetResourceAByIdNotFoundError(
         [Frozen] Mock<IResourceARepository> resourceARepositoryMock,
         GetResourceAByIdUseCase sut,
-        GetResourceAByIdRequest request)
+        GetResourceAByIdRequest request
+    )
     {
         // Arrange
         resourceARepositoryMock
             .Setup(x => x.GetById(request.ResourceRequestedId))
             .Returns(value: null);
 
-        Result<GetResourceAByIdResponse, GetResourceAByIdNotFoundError> expected = new GetResourceAByIdNotFoundError(IdRequestedNotFound: request.ResourceRequestedId);
+        Result<GetResourceAByIdResponse, GetResourceAByIdNotFoundError> expected =
+            new GetResourceAByIdNotFoundError(IdRequestedNotFound: request.ResourceRequestedId);
 
         // Act
         var result = sut.GetResourceAById(request);

@@ -1,13 +1,9 @@
-using Host;
+using ComponentName.Host;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var app = builder.ConfigureApplicationBuilder().Build();
 
-var app = builder
-    .ConfigureApplicationBuilder()
-    .Build();
+app.ConfigureApplication().Run();
 
-app
-    .ConfigureApplication()
-    .Run();
 public partial class Program { }

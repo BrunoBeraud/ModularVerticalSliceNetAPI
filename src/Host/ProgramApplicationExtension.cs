@@ -1,8 +1,7 @@
-using FunctionalDomainNameA;
+using ComponentName.FunctionalDomainNameA;
+using ComponentName.FunctionalDomainNameB;
 
-using FunctionalDomainNameB;
-
-namespace Host;
+namespace ComponentName.Host;
 
 public static class ProgramApplicationExtension
 {
@@ -21,10 +20,12 @@ public static class ProgramApplicationExtension
 
         app.UseMiddleware<LogFailedIncomingRequestMiddleware>();
 
-        app.UseExceptionHandler(new ExceptionHandlerOptions
-        {
-            StatusCodeSelector = ex => StatusCodes.Status500InternalServerError
-        });
+        app.UseExceptionHandler(
+            new ExceptionHandlerOptions
+            {
+                StatusCodeSelector = ex => StatusCodes.Status500InternalServerError,
+            }
+        );
 
         return app;
     }

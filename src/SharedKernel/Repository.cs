@@ -1,4 +1,4 @@
-namespace SharedKernel;
+namespace ComponentName.SharedKernel;
 
 public interface IRepository<TEntity, TEntityId>
     where TEntity : Entity<TEntityId>

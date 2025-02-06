@@ -1,4 +1,4 @@
-namespace Host;
+namespace ComponentName.Host;
 
 internal static partial class Logs
 {
@@ -7,7 +7,8 @@ internal static partial class Logs
         headers: {headers}; 
         queryParameters: {queryParameters};
         request: {jsonRequestPayload};
-        response: {responseJsonBody}")]
+        response: {responseJsonBody}"
+    )]
     public static partial void IncomingRequestFailed(
         this ILogger logger,
         LogLevel logLevel,
@@ -17,6 +18,6 @@ internal static partial class Logs
         string headers,
         string queryParameters,
         string jsonRequestPayload,
-        string responseJsonBody);
-
+        string responseJsonBody
+    );
 }
