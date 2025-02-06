@@ -1,5 +1,4 @@
 using OpenTelemetry;
-using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -19,7 +18,7 @@ internal static class ObservabilityBuilderExtension
 
         var otel = builder.Services.AddOpenTelemetry();
 
-        var otlpServiceName = builder.Configuration["OpenTelemetry:OTELSERVICE_NAME"];
+        var otlpServiceName = builder.Configuration["OTELSERVICE_NAME"];
         ArgumentNullException.ThrowIfNull(otlpServiceName);
         otel.ConfigureResource(builder => builder.AddService(serviceName: otlpServiceName));
 
@@ -32,10 +31,10 @@ internal static class ObservabilityBuilderExtension
         otel.WithTracing(tracing => tracing.AddAspNetCoreInstrumentation());
 
         // Export OpenTelemetry data via OTLP, using env vars for the configuration
-        var otlpEndpoint = builder.Configuration["OpenTelemetry:OTEL_EXPORTER_OTLP_ENDPOINT"];
+        var otlpEndpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
         ArgumentNullException.ThrowIfNull(otlpEndpoint);
 
-        otel.UseOtlpExporter(OtlpExportProtocol.Grpc, new Uri(otlpEndpoint));
+        otel.UseOtlpExporter();
 
         return builder;
     }
